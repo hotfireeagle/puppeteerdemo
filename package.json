@@ -4,11 +4,13 @@
   "description": "团队puppeteer分享介绍",
   "main": "index.js",
   "scripts": {
+    "manhua": "node ./demo1.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.9",
     "puppeteer": "^9.1.1"
   }
 }
