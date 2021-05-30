@@ -1,0 +1,14 @@
+{
+  "name": "puppeteerdemo",
+  "version": "1.0.0",
+  "description": "团队puppeteer分享介绍",
+  "main": "index.js",
+  "scripts": {
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^9.1.1"
+  }
+}
