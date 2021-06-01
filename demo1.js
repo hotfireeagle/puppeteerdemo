@@ -53,7 +53,6 @@ const downloadChapter = async () => {
     await page.goto(url, { waitUntil: "domcontentloaded" })
     await sleep(500, false)
     const arr = await page.$$("#page_select > option")
-    console.log(arr.length)
     for (let idx = 0; idx < arr.length; idx++) {
       const sel = `#page_select > option:nth-child(${idx+1})`
       const imgUrl = await page.$eval(sel, ele => ele.value)
@@ -92,16 +91,19 @@ const mkdirHandler = async title => {
  * @param {*} imgUrl : 图片链接
  */
 const downloadImg = async (chapterPath, i, imgUrl) => {
-  console.log(`[LOG]: 开始下载${imgUrl}`)
-  const res = await axios({
-    method: "get",
-    url: imgUrl,
-    responseType: "stream",
-  })
-  const picDir = path.join("./", chapterPath, `${i}.jpg`)
-  const writer = fs.createWriteStream(picDir)
-  res.data.pipe(writer)
-  console.log(`[LOG]: 成功下载${imgUrl}`)
+  try {
+    console.log(`[LOG]: 开始下载${imgUrl}`)
+    const res = await axios({
+      method: "get",
+      url: imgUrl,
+      responseType: "stream",
+    })
+    const picDir = path.join("./", chapterPath, `${i}.jpg`)
+    const writer = fs.createWriteStream(picDir)
+    res.data.pipe(writer)
+    console.log(`[LOG]: 成功下载${imgUrl}`)
+    await sleep(1000)
+  } catch(_){}
 }
 
 const main = async () => {

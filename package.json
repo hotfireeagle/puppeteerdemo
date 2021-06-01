@@ -4,7 +4,8 @@
   "description": "团队puppeteer分享介绍",
   "main": "index.js",
   "scripts": {
-    "manhua": "node ./demo1.js"
+    "manhua": "node ./demo1.js",
+    "pdf": "node ./demo2.js"
   },
   "keywords": [],
   "author": "",
