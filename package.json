@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "manhua": "node ./demo1.js",
-    "pdf": "node ./demo2.js"
+    "pdf": "node ./demo2.js",
+    "autotest": "node ./demo3.js"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +14,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "cheerio": "^1.0.0-rc.9",
+    "prompts": "^2.4.1",
     "puppeteer": "^9.1.1"
   }
 }
