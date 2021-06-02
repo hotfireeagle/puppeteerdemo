@@ -3,10 +3,19 @@
  */
 const puppeteer = require("puppeteer")
 const prompts = require("prompts")
+const chalk = require("chalk")
 
 let page
 
+const log = str => console.log(`[LOG]: ${str}`)
+const successLog = str => console.log(chalk.green(`[成功]: ${str}`))
+const errLog = str => console.log(chalk.red(`[失败]: ${str}`))
+
+/**
+ * 测试登录接口正常，且前端登录之后跳转正常
+ */
 const testCanLoginSuccess = async () => {
+  log("测试登录功能是否正常")
   await Promise.all([
     page.waitForNavigation({ waitUntil: "networkidle0" }),
     page.goto("https://sit-biz.booleandata.cn/own/?channel=03")
@@ -31,7 +40,16 @@ const testCanLoginSuccess = async () => {
     { delay: 200 }
   )
   // 点击登录
-  await page.click("#__layout > div > div.page-content-view > div > button > div")
+  await Promise.all([
+    page.waitForNavigation({ waitUntil: "networkidle0" }),
+    page.click("#__layout > div > div.page-content-view > div > button > div")
+  ])
+  const homePage = page.url()
+  if (homePage.includes("/home")) {
+    successLog("登录功能正常")
+  } else {
+    errLog("登录功能异常")
+  }
 }
 
 const work = async () => {

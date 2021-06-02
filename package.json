@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",
+    "chalk": "^4.1.1",
     "cheerio": "^1.0.0-rc.9",
     "prompts": "^2.4.1",
     "puppeteer": "^9.1.1"
