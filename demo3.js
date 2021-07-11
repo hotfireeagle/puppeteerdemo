@@ -95,7 +95,7 @@ const testLoginFailedWhenChannelShutdown = async () => {
     errLog("浩韵渠道还可用")
     return
   }
-  if (toastContent !== "该渠道已停用") {
+  if (toastContent !== "该渠道已停用22") {
     errLog("弹窗提示语错误")
   } else {
     successLog("浩韵渠道不可用测试通过")

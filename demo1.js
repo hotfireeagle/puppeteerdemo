@@ -31,7 +31,7 @@ const analyzeChapters = htmlTxt => {
   $("div.tab-content.tab-content-selected.zj_list_con > ul.list_con_li > li > a").each((idx, ele) => {
     const url = ele?.attribs?.href
     const title = ele?.attribs?.title || idx
-    console.log("[LOG]:", idx, title, url)
+    console.log("[LOG]:", idx, title)
     if (url) {
       const obj = { url, title }
       chapterList.unshift(obj)
@@ -56,7 +56,8 @@ const downloadChapter = async () => {
     for (let idx = 0; idx < arr.length; idx++) {
       const sel = `#page_select > option:nth-child(${idx+1})`
       const imgUrl = await page.$eval(sel, ele => ele.value)
-      await downloadImg(filePath, idx+1, imgUrl)
+      const cookie = await page.evaluate(() => document.cookie)
+      await downloadImg(filePath, idx+1, imgUrl, cookie)
     }
   }
 }
@@ -90,24 +91,34 @@ const mkdirHandler = async title => {
  * @param {*} i : 索引当作文件名
  * @param {*} imgUrl : 图片链接
  */
-const downloadImg = async (chapterPath, i, imgUrl) => {
+const downloadImg = async (chapterPath, i, imgUrl, cookie) => {
   try {
-    console.log(`[LOG]: 开始下载${imgUrl}`)
+    console.log(`[LOG]: 开始下载${i}`)
     const res = await axios({
       method: "get",
       url: imgUrl,
       responseType: "stream",
+      headers: {
+        Cookie: cookie,
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
+        "sec-ch-ua": ` Not;A Brand";v="99", "Google Chrome";v="91", "Chromium";v="91`,
+        "sec-ch-ua-mobile": "?0",
+        "Referer": "https://www.dmzj.com/",
+      },
+      withCredentials: true
     })
     const picDir = path.join("./", chapterPath, `${i}.jpg`)
     const writer = fs.createWriteStream(picDir)
     res.data.pipe(writer)
-    console.log(`[LOG]: 成功下载${imgUrl}`)
-    await sleep(1000)
-  } catch(_){}
+    console.log(`[LOG]: 成功下载${i}`)
+    await sleep(500)
+  } catch(err) {
+    console.error(err)
+  }
 }
 
 const main = async () => {
-  const browser = await puppeteer.launch({ headless: false })
+  const browser = await puppeteer.launch({ headless: true })
   page = await browser.newPage()
   const res = await page.goto(entry)
   const txt = await res.text()
